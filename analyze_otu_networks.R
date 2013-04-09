@@ -55,7 +55,18 @@ write.csv(scores, "aic_scores.csv", row.names=F)
 #####################
 
 
-netplot2(allInfo, names(allInfo)[12], 20:27) #lowest AICnet
-netplot2(allInfo, names(allInfo)[9], 20:27) #lowest AICall
+siteCols = rainbow(9)[-1]
+
+netplot2(allInfo, names(allInfo)[12], 20:27,
+         siteCol=siteCols,
+         main=names(allInfo[12])) #lowest AICnet, exclude red from site colors
+
+netplot2(allInfo, names(allInfo)[9], 20:27,
+         
+         siteCol=siteCols,
+         main=names(allInfo[12])) #lowest AICall
+#see who is who
+plot(1:8, rep(1,8), col=rainbow(9)[-1], pch=19)
+text(1:8, rep(1,8)+0.1, labels=names(allInfo)[20:27])
 
 netPlot(allInfo, names(allInfo)[12], 20:27,high.spacing=0.0009)

@@ -82,7 +82,10 @@ netPlot <- function(adf, otuCol, ids=4:6, ...){
 ### Uses the network library to make a network graph
 ### with the sites as the blue nodes.  Can accept
 ### other arguments to plot.network
-netplot2 <- function(adf, otuCol, ids=4:6, edge.scale=20, ...){
+netplot2 <- function(adf, otuCol, ids=4:6, edge.scale=20, 
+                     seqCol = "red",
+                     siteCol = rep("blue", length(ids)),
+                                 ...){
   groupWeb <- ddply(adf, otuCol, function(x) colSums(x[,ids]))
   groupWeb <- groupWeb[,-1]
   zmat1 <- matrix(rep(0, length(ids)^2), ncol=length(ids))
@@ -93,7 +96,7 @@ netplot2 <- function(adf, otuCol, ids=4:6, edge.scale=20, ...){
   g2 <- network(as.matrix(g))
   
   #note, I still don't like how edges work here...need to figure out a better scheme
-  plot(g2, vertex.col=c(rep("blue", length(ids)), rep("red", nrow(groupWeb))),
+  plot(g2, vertex.col=c(siteCol, rep("red", nrow(groupWeb))),
        edge.lwd=g/max(g)*edge.scale, ...)
 }
 
