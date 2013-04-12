@@ -6,7 +6,7 @@
 ### Jarrett Byrnes
 ### Last updated: 4/11/2013
 ####################################
-
+source("./getNetworkAIC.R")
 
 loc <- matrix(c(50,0,0,
                 45,0,0,
