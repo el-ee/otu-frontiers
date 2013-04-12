@@ -15,10 +15,11 @@ library(parallel)
 
 ## Get the LL based on all sequences being assumed to have
 ## equal abundances within a group
-LikColDensity <- function(acol, useLogLik=T){
+LikColDensity <- function(acol, useLogLik=T, dist="binom"){
   if(sum(acol)==0) return(0) #defining 0*log(0) as 0 as in Allesina and Pascual 2009
   s <- sum(acol)
-  LL <- dbinom(acol, size=s, prob=1/length(acol), log=useLogLik)
+  if(dist=="binom") LL <- dbinom(acol, size=s, prob=1/length(acol), log=useLogLik)
+  if(dist=="pois") LL <- dpois(acol, s/length(acol), log=useLogLik)
   if(useLogLik) return(sum(LL))
   prod(LL)
 }  
