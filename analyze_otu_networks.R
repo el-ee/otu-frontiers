@@ -36,15 +36,21 @@ LLvec <-c(0, sapply(2:19, function(x)
 LLDvec <-c(0, sapply(2:19, function(x) 
   getLogLik(allInfo, names(allInfo)[x], 20:27, binary=F, network=F, mc.cores=6)))
 
+
+LLDvecPois <-c(0, sapply(2:19, function(x) 
+  getLogLik(allInfo, names(allInfo)[x], 20:27, binary=F, network=F, mc.cores=6, probFun="Poisson")))
+
+
 #get the number og groups
 kvec <- sapply(1:19, function(x) length(unique(allInfo[,x])))
 
 #create a data frame with LLs
-scores <- data.frame(group = names(allInfo)[1:19], K=kvec, LLnet = LLvec, LLdens = LLDvec)
+scores <- data.frame(group = names(allInfo)[1:19], K=kvec, LLnet = LLvec, LLdens = LLDvec, LLdensPois=LLDvecPois)
 
 #calculate AIC values
 scores$AICnet <- with(scores, -2*LLnet + 2*K*6 + 2*nrow(allInfo))
 scores$AICall <- with(scores, -2*LLnet - 2*LLdens+ 4*K*6 + 2*nrow(allInfo))
+scores$AICallPois <- with(scores, -2*LLnet - 2* LLdensPois + 4*K*6 + 2*nrow(allInfo))
 scores$group[which(scores$AIC==min(scores$AIC))]
 
 
