@@ -14,6 +14,9 @@ library(multicore)
 
 #sq <- as.character(a[[1]])
 
+#the common file name for all .fasta files in your directories
+FILE_NAME = "R1.fasta"
+
 #A function to take a read in fasta file that returns a 
 #data frame with sequences and OTU memberships
 get_otuseq <- function (fastaSet){
@@ -40,7 +43,7 @@ dirs <- dir()
 dirs <- dirs[-grep("\\.R", dirs)]
 
 ###Now let's figure out how many unique sequences we have
-baseline <- readDNAStringSet(paste(dirs[1], "/concordance.fasta", sep=""), "fasta")
+baseline <- readDNAStringSet(paste(dirs[1], FILE_NAME, sep=""), "fasta")
 #which are the unique sequences across all files
 uqIdx <- which(!duplicated(as.vector(baseline))) 
 seq_rows <- length(uqIdx)
@@ -51,7 +54,7 @@ concordance_array <- array(rep(NA,2*seq_rows*length(dirs)),
                              length(dirs)))
 
 for(i in 1:length(dirs)){
-  a_concordance <- readDNAStringSet(paste(dirs[i], "/concordance.fasta", sep=""), "fasta")
+  a_concordance <- readDNAStringSet(paste(dirs[i], FILE_NAME, sep=""), "fasta")
   uqIdxI <- which(!duplicated(as.vector(a_concordance)))#[1:200] 
   concordance_array[,,i] <- as.matrix(get_otuseq(a_concordance[uqIdxI]) )  
 }
