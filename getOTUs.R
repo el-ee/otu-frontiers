@@ -40,10 +40,13 @@ get_otuseq <- function (fastaSet){
 
 #What are the directories
 dirs <- dir()
-dirs <- dirs[-grep("\\.R", dirs)]
+
+# Lost on what is happening with this next line, exactly; previous command by itself fetches directories in current folder which is how i'm runnig this, possibly incorrectly? but...  
+# dirs <- dirs[-grep("\\.R", dirs)]
 
 ###Now let's figure out how many unique sequences we have
-baseline <- readDNAStringSet(paste(dirs[1], FILE_NAME, sep=""), "fasta")
+# E: added separator as /
+baseline <- readDNAStringSet(paste(dirs[1], FILE_NAME, sep="/"), "fasta")
 #which are the unique sequences across all files
 uqIdx <- which(!duplicated(as.vector(baseline))) 
 seq_rows <- length(uqIdx)
@@ -53,8 +56,9 @@ concordance_array <- array(rep(NA,2*seq_rows*length(dirs)),
                              2,
                              length(dirs)))
 
+# E: added separator as /
 for(i in 1:length(dirs)){
-  a_concordance <- readDNAStringSet(paste(dirs[i], FILE_NAME, sep=""), "fasta")
+  a_concordance <- readDNAStringSet(paste(dirs[i], FILE_NAME, sep="/"), "fasta")
   uqIdxI <- which(!duplicated(as.vector(a_concordance)))#[1:200] 
   concordance_array[,,i] <- as.matrix(get_otuseq(a_concordance[uqIdxI]) )  
 }
