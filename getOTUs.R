@@ -15,20 +15,27 @@ library(multicore)
 #sq <- as.character(a[[1]])
 
 #the common file name for all .fasta files in your directories
-FILE_NAME = "R1.fasta"
+FILE_NAME = "concordance.fasta"
 
 #A function to take a read in fasta file that returns a 
 #data frame with sequences and OTU memberships
 get_otuseq <- function (fastaSet){
   #use mclapply to scroll over all lines to make this shorter
   #in order to later transition to mclapply for speed
+  
+  print("getotu")
+  
   SOTU <- mclapply(1:length(fastaSet), function(x) {
     #get OTU membership for a line
+    
+    print("SOTU")
     b <- strsplit(names(fastaSet[x]), ":")[[1]]
     otu<-b[length(b)]
   
     data.frame(S=as.character(fastaSet[[x]]), OTU=otu)
   }, mc.cores=2)
+
+	print("post-mclappy")
 
   SOTU <- ldply(SOTU)
 
@@ -58,9 +65,14 @@ concordance_array <- array(rep(NA,2*seq_rows*length(dirs)),
 
 # E: added separator as /
 for(i in 1:length(dirs)){
+	print("looping")
+	print(i)
   a_concordance <- readDNAStringSet(paste(dirs[i], FILE_NAME, sep="/"), "fasta")
+  print("concordance")
   uqIdxI <- which(!duplicated(as.vector(a_concordance)))#[1:200] 
+  print("duplicated")
   concordance_array[,,i] <- as.matrix(get_otuseq(a_concordance[uqIdxI]) )  
+	print("array")
 }
 
 
