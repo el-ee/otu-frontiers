@@ -10,19 +10,13 @@ Best guess at arranging them in some order of how they might be **used**
 
 
 ## Data organization
-Best I can tell, data should be organized in a series of directories, one directory for each sample, fasta file for that sample inside its directory
+! so much confusion here, but there is something happening with multiple directories. I am not entirely sure why.
 
-like
+Do you use this with lots of samples? 
 
-```
-/S01/data.fasta
-/S02/data.fasta
-/S03/data.fasta
-...
-/Sxx/data.fasta
-```
+Or multiple files of the same sample? 
 
-You should run these R files from the parent directory that contains all of the S* directories. 
+Or.. why are there directories and what is in them?
 
 ## 1. First use this file, which reads in this fasta data by traversing directories & produces otu csv
 
